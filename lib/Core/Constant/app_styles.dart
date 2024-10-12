@@ -55,4 +55,23 @@ abstract class AppStyles {
     fontSize: 12.sp,
     color: AppColors.white,
   );
+  static TextStyle whiteinterbold20 = TextStyle(
+    color: AppColors.white,
+    fontSize: 20.sp,
+    fontFamily: 'Inter Bold',
+  );
+  static TextStyle gradientRegular90 = TextStyle(
+    fontFamily: 'Waterfall Regular',
+    fontSize: 90.sp,
+    foreground: Paint()
+      ..shader = const LinearGradient(
+        colors: <Color>[
+          Color(0xff3B21B5),
+          Color(0xff8F62D7),
+          Color(0xffC69BE7)
+        ],
+      ).createShader(
+        const Rect.fromLTWH(250.0, 250.0, 250.0, 250.0),
+      ),
+  );
 }

@@ -1,11 +1,22 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:social_app/Config/Router/app_routes.dart';
 import 'package:social_app/Config/Router/routes_name.dart';
+import 'package:social_app/features/auth/presentation/cubit/auth_cubit/cubit/auth_cubit.dart';
+import 'package:social_app/firebase_options.dart';
 
-void main() {
+import 'injections.dart' as di;
+
+void main() async {
+  di.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -24,15 +35,20 @@ class SocialApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Social App',
-          theme: ThemeData(
-            useMaterial3: true,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => di.getIt<AuthCubit>()),
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Social App',
+            theme: ThemeData(
+              useMaterial3: true,
+            ),
+            initialRoute: RoutesName.app,
+            onGenerateRoute: AppRoutes.onGenerateRoute,
+            onUnknownRoute: AppRoutes.onUnknownRoute,
           ),
-          initialRoute: RoutesName.introduce,
-          onGenerateRoute: AppRoutes.onGenerateRoute,
-          onUnknownRoute: AppRoutes.onUnknownRoute,
         );
       },
     );

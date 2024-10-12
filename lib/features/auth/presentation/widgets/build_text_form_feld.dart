@@ -20,6 +20,7 @@ class BuildTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: AppStyles.whiteMedium13,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
