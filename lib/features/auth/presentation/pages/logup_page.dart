@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/Config/Router/routes_name.dart';
 import 'package:social_app/Core/Constant/app_colors.dart';
 import 'package:social_app/Core/Extensions/Navigation/app_navigations.dart';
+import 'package:social_app/features/app/presentation/pages/bottom_nav_bar_app.dart';
 import 'package:social_app/features/auth/presentation/cubit/auth_cubit/cubit/auth_cubit.dart';
 import 'package:social_app/features/auth/presentation/cubit/taggel/toggle_checkbox.dart';
 import 'package:social_app/features/auth/presentation/cubit/taggel/toggle_choose_gender.dart';
@@ -62,7 +63,12 @@ class LogupPage extends StatelessWidget {
 
   void handleAuthState(BuildContext context, AuthState state) {
     if (state is Homesuccess) {
-      context.pushNamed(pageRoute: RoutesName.home);
+      context.push(page: BottomNavBarApp(
+        firstname: firstNameController.text,
+        lastname: lastNameController.text,
+
+
+      ));
     } else if (state is HomeError) {
       Fluttertoast.showToast(
         msg: 'An unexpected error occurred.',

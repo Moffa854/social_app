@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:social_app/Core/Constant/app_styles.dart';
 import 'package:social_app/Core/Constant/sizes_app.dart';
 import 'package:social_app/features/auth/presentation/widgets/build_email_field_login.dart';
@@ -36,7 +35,7 @@ class BuildForm extends StatelessWidget {
           children: [
             Text(
               'Sign in',
-              style: AppStyles.whiteBold13.copyWith(fontSize: 18.sp),
+              style: AppStyles.whiteBold13.copyWith(fontSize: 18),
             ),
             const SizedBox(height: 30),
             BuildEmailFieldLogIn(emailController: emailController),

@@ -19,12 +19,11 @@ class BuildBottomContent extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.33,
         decoration: const BoxDecoration(
-          color: AppColors.wardy,
-          borderRadius: BorderRadius.horizontal(
-            left: Radius.circular(40),
-            right: Radius.circular(40),
-          ),
-        ),
+            color: AppColors.wardy,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            )),
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: sizesApp(context, 40, 50, 60).toDouble(),

@@ -1,9 +1,9 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:social_app/Config/Router/app_routes.dart';
 import 'package:social_app/Config/Router/routes_name.dart';
 import 'package:social_app/features/auth/presentation/cubit/auth_cubit/cubit/auth_cubit.dart';
@@ -17,6 +17,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAppCheck.instance.activate(
+      webProvider: ReCaptchaV3Provider('your-recaptcha-site-key'),
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.debug);
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -30,27 +34,20 @@ class SocialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => di.getIt<AuthCubit>()),
-          ],
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Social App',
-            theme: ThemeData(
-              useMaterial3: true,
-            ),
-            initialRoute: RoutesName.app,
-            onGenerateRoute: AppRoutes.onGenerateRoute,
-            onUnknownRoute: AppRoutes.onUnknownRoute,
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => di.getIt<AuthCubit>()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Social App',
+        theme: ThemeData(
+          useMaterial3: true,
+        ),
+        initialRoute: RoutesName.logup,
+        onGenerateRoute: AppRoutes.onGenerateRoute,
+        onUnknownRoute: AppRoutes.onUnknownRoute,
+      ),
     );
   }
 }
