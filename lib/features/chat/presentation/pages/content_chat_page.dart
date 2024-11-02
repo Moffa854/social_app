@@ -199,6 +199,7 @@ class _ChatState extends State<Chat> {
                       ),
                     ],
                   ),
+                  
                 ),
               ],
             ),
