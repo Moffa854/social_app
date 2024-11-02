@@ -6,7 +6,7 @@ class SignupUsecase {
   final AuthRepo authRepository;
 
   SignupUsecase({required this.authRepository});
-  Future<Either<Failure, void>> call(String email, String password) async {
-    return await authRepository.register(email, password);
+  Future<Either<Failure, void>> call(String email, String password ,String fristname, String lastname,) async {
+    return await authRepository.register(email, password, fristname, lastname, );
   }
 }

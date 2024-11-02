@@ -12,6 +12,7 @@ class BuildEmailFieldForget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BuildTextFormField(
+      textInputType: TextInputType.emailAddress,
       hintText: 'Enter your email address',
       validator: 'Enter valid email address',
       controller: emailController,

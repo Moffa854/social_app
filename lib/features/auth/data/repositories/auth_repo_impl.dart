@@ -13,14 +13,14 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<Failure, void>> login(String email, String password) async {
     return await _authRemoteDataSource.login(email, password);
   }
-
-  @override
   @override
   Future<Either<Failure, void>> register(
     String email,
     String password,
+    String fristname,
+    String lastname,
   ) async {
-    return await _authRemoteDataSource.register(email, password);
+    return await _authRemoteDataSource.register(email, password,fristname,lastname, );
   }
 
   @override

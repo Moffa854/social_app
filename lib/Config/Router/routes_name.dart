@@ -4,5 +4,4 @@ class RoutesName {
   static const String logup = '/logup';
   static const String home = '/home';
   static const String forgetPassword = '/forgetPassword';
-  static const String app = '/app';
 }

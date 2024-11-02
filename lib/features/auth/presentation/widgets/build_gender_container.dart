@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Core/Constant/app_colors.dart';
 import 'package:social_app/Core/Constant/app_styles.dart';
 import 'package:social_app/Core/Constant/sizes_app.dart';
-import 'package:social_app/features/auth/presentation/cubit/taggel/toggle_choose_gender.dart';
+import 'package:social_app/features/auth/presentation/manager/taggel/toggle_choose_gender.dart';
 
 class BuildGenderContainer extends StatelessWidget {
   final String gender;

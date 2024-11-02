@@ -2,87 +2,91 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:social_app/Core/errors/errors.dart';
+import 'package:social_app/Core/errors/fialure_server.dart';
+import 'package:social_app/Core/errors/server_exception.dart';
+import 'package:social_app/features/auth/data/models/auth_model.dart';
 
-abstract class PersonRemoteDataSource {
-  Future<Either<Failure, Map<String, dynamic>>> getUserData(String userId);
-  Future<Either<Failure, String>> uploadProfileImage(
-      String userId, XFile imageFile);
-  Future<Either<Failure, String>> uploadCoverImage(
-      String userId, XFile imageFile);
+abstract class SettingRemoteDataSource {
+  Future<Either<FialureServer, UserModel>> getUserData();
+  Future<Either<FialureServer, void>> updateUserData({required UserModel user});
+  Future<Either<FialureServer, String>> ulpoadeImage(
+      {required String userId, required File file, required String path});
+  Future<Either<FialureServer, String>> ulpoadeCoverImage({
+    required String userId,
+    required File file,
+    required String path,
+  });
 }
 
-class PersonRemoteDataSourceImpl implements PersonRemoteDataSource {
+class SettingRemoteDataSourceImpl implements SettingRemoteDataSource {
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
+  final FirebaseAuth _auth;
 
-  PersonRemoteDataSourceImpl({
+  SettingRemoteDataSourceImpl({
     required FirebaseFirestore firestore,
     required FirebaseStorage storage,
+    required FirebaseAuth auth,
   })  : _firestore = firestore,
-        _storage = storage;
+        _storage = storage,
+        _auth = auth;
+  @override
+  Future<Either<FialureServer, UserModel>> getUserData() async {
+    try {
+      final userData = await _firestore
+          .collection('users')
+          .doc(_auth.currentUser!.email!)
+          .get();
+      return Right(UserModel.fromSnapshot(userData));
+    } catch (e) {
+      return Left(FialureServer());
+    }
+  }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> getUserData(
-      String userId) async {
+  Future<Either<FialureServer, void>> updateUserData(
+      {required UserModel user}) async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await _firestore.collection('users').doc(userId).get();
-      Map<String, dynamic> data = documentSnapshot.data() ?? {};
+      final data = await _firestore.collection('users').doc(user.email).update(
+            user.toMap(),
+          );
       return Right(data);
-    } on FirebaseException catch (e) {
-      return Left(ServerFailure());
+    } catch (e) {
+      return Left(FialureServer());
     }
   }
-
-@override
-Future<Either<Failure, String>> uploadCoverImage(
-    String userId, XFile imageFile) async {
-  try {
-    // Check if the user document exists
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await _firestore.collection('users').doc(userId).get();
-
-    if (!documentSnapshot.exists) {
-      // Create a new document if it doesn't exist
-      await _firestore.collection('users').doc(userId).set({
-        'coverImage': '',
-        // Add other default fields as necessary
-      });
-    }
-
-    Reference reference =
-        _storage.ref().child('users').child(userId).child('coverphoto');
-    UploadTask uploadTask = reference.putFile(File(imageFile.path));
-    TaskSnapshot taskSnapshot = await uploadTask;
-    String imageUrl = await taskSnapshot.ref.getDownloadURL();
-
-    // Update Firestore with the new cover image URL
-    await _firestore.collection('users').doc(userId).update({
-      'coverImage': imageUrl,
-    });
-
-    return Right(imageUrl);
-  } on FirebaseException catch (e) {
-    return Left(ServerFailure());
-  }
-}
-
 
   @override
-  Future<Either<Failure, String>> uploadProfileImage(
-      String userId, XFile imageFile) async {
+  Future<Either<FialureServer, String>> ulpoadeImage({
+    required String userId,
+    required File file,
+    required String path,
+  }) async {
     try {
-      Reference reference =
-          _storage.ref().child('users').child(userId).child('profilephoto');
-      UploadTask uploadTask = reference.putFile(File(imageFile.path));
-      TaskSnapshot taskSnapshot = await uploadTask;
-      String imageUrl = await taskSnapshot.ref.getDownloadURL();
-      return Right(imageUrl);
-    } on FirebaseException catch (e) {
-      return Left(ServerFailure());
+      final image =
+          await _storage.ref().child(path).child(userId).putFile(file);
+      final url = await image.ref.getDownloadURL();
+      return Right(url);
+    } on ServerException catch (e) {
+      return Left(FialureServer());
+    }
+  }
+
+  @override
+  Future<Either<FialureServer, String>> ulpoadeCoverImage({
+    required String userId,
+    required File file,
+    required String path,
+  }) async {
+    try {
+      final image =
+          await _storage.ref().child(path).child(userId).putFile(file);
+      final url = await image.ref.getDownloadURL();
+      return Right(url);
+    } on ServerException catch (e) {
+      return Left(FialureServer());
     }
   }
 }

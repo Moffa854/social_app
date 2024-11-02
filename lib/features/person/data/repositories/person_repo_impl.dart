@@ -1,30 +1,35 @@
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:social_app/Core/errors/errors.dart';
+import 'package:social_app/Core/errors/fialure_server.dart';
+import 'package:social_app/features/auth/data/models/auth_model.dart';
 import 'package:social_app/features/person/data/datasources/remote/person_remote_data_source.dart';
 import 'package:social_app/features/person/domain/repositories/person_repo.dart';
 
-class PersonRepoImpl implements PersonRepo {
-  final PersonRemoteDataSource _remoteDataSource;
+class SettingRepoImpl implements SettingRepo {
+  final SettingRemoteDataSource _dataSource;
 
-  PersonRepoImpl({required PersonRemoteDataSource remoteDataSource,})
-      : _remoteDataSource = remoteDataSource;
+  SettingRepoImpl({required SettingRemoteDataSource dataSource})
+      : _dataSource = dataSource;
   @override
-  Future<Either<Failure, Map<String, dynamic>>> getUserData(
-      String userId) async {
-    return await _remoteDataSource.getUserData(userId);
+  Future<Either<FialureServer, UserModel>> getUserData() {
+    return _dataSource.getUserData();
   }
 
   @override
-  Future<Either<Failure, String>> uploadCoverImage(
-      String userId, XFile imageFile) async {
-    return await _remoteDataSource.uploadCoverImage(userId, imageFile);
+  Future<Either<FialureServer, void>> updateUserData(
+      {required UserModel user}) async {
+    return _dataSource.updateUserData(user: user);
   }
 
   @override
-  Future<Either<Failure, String>> uploadProfileImage(
-      String userId, XFile imageFile) async {
-    return await _remoteDataSource.uploadProfileImage(userId, imageFile);
+  Future<Either<FialureServer, String>> ulpoadeImage(
+      {required String userId, required File file , required String path}) async {
+    return await _dataSource.ulpoadeImage(userId: userId, file: file , path: path);
+  }
+  
+  @override
+  Future<Either<FialureServer, String>> ulpoadeCoverImage({required String userId, required File file, required String path})async {
+    return await _dataSource.ulpoadeCoverImage(userId: userId, file: file, path: path);
   }
 }

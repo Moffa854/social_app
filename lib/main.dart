@@ -4,9 +4,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:social_app/Config/Router/app_routes.dart';
 import 'package:social_app/Config/Router/routes_name.dart';
-import 'package:social_app/features/auth/presentation/cubit/auth_cubit/cubit/auth_cubit.dart';
+import 'package:social_app/features/auth/presentation/manager/auth%20cubit/auth_cubit.dart';
+import 'package:social_app/features/chat/presentation/manager/create%20chat/create_chat_cubit.dart';
+import 'package:social_app/features/chat/presentation/manager/get%20user/chat_cubit.dart';
+import 'package:social_app/features/chat/presentation/manager/send%20message/send_message_cubit.dart';
+import 'package:social_app/features/home/presentation/cubit/get%20posts/get_posts_cubit.dart';
+import 'package:social_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:social_app/features/person/presentation/cubit/UploadeImage/ulpoade_image_cubit.dart';
+import 'package:social_app/features/person/presentation/cubit/image%20cover/image_cover_cubit.dart';
+import 'package:social_app/features/person/presentation/cubit/person%20cubit/setting_cubit.dart';
+import 'package:social_app/features/person/presentation/cubit/update%20person/update_user_setting_cubit.dart';
 import 'package:social_app/firebase_options.dart';
 
 import 'injections.dart' as di;
@@ -36,18 +46,54 @@ class SocialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => di.getIt<AuthCubit>()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Social App',
-        theme: ThemeData(
-          useMaterial3: true,
+        BlocProvider(
+          create: (context) => di.getIt<SendMessageCubit>(),
         ),
-        initialRoute: RoutesName.logup,
-        onGenerateRoute: AppRoutes.onGenerateRoute,
-        onUnknownRoute: AppRoutes.onUnknownRoute,
-      ),
+        BlocProvider(
+          create: (context) => di.getIt<CreatChatCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<ChatCubit>()..getUsers(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<AuthCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<PersonCubit>()..getUserData(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<UlpoadeImageProfileCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<UlpoadeImageCoverCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<UpdateUserPersonCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<HomeCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => di.getIt<GetPostsCubit>()..getPosts(),
+        ),
+      ],
+      child: ScreenUtilInit(
+          designSize: const Size(390, 844),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Social App',
+              themeMode: ThemeMode.dark,
+              theme: ThemeData(
+                useMaterial3: true,
+              ),
+              initialRoute: RoutesName.logup,
+              onGenerateRoute: AppRoutes.onGenerateRoute,
+              onUnknownRoute: AppRoutes.onUnknownRoute,
+            );
+          }),
     );
   }
 }

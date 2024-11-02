@@ -51,7 +51,7 @@ abstract class AppStyles {
   );
   static TextStyle whitePoppinsMedium12 = const TextStyle(
     fontFamily: 'Poppins Medium',
-    fontSize: 16,
+    fontSize: 14,
     color: AppColors.white,
   );
   static TextStyle whiteinterbold20 = const TextStyle(
@@ -76,7 +76,7 @@ abstract class AppStyles {
 
   static TextStyle heavybluePoppinsSemiBold13 = const TextStyle(
     color: AppColors.heavyblue,
-    fontSize: 13,
+    fontSize: 16,
     fontFamily: 'Poppins SemiBold',
   );
 

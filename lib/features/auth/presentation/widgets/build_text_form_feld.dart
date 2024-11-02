@@ -8,6 +8,8 @@ class BuildTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final Widget? suffixIcon;
   final bool? obscureText;
+  final TextInputType? textInputType;
+  final Color? colorField;
   const BuildTextFormField({
     super.key,
     required this.hintText,
@@ -15,11 +17,14 @@ class BuildTextFormField extends StatelessWidget {
     required this.validator,
     this.suffixIcon,
     this.obscureText,
+    this.textInputType,
+    this.colorField,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: textInputType ?? TextInputType.text,
       style: AppStyles.whiteMedium13,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -49,16 +54,16 @@ class BuildTextFormField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(
+          borderSide:  BorderSide(
             width: 3,
-            color: AppColors.white,
+            color: colorField??AppColors.white,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(
+          borderSide:  BorderSide(
             width: 3,
-            color: AppColors.white,
+            color: colorField??AppColors.white,
           ),
         ),
         suffixIcon: suffixIcon,

@@ -27,30 +27,32 @@ class BuildBody extends StatelessWidget {
       decoration: const BoxDecoration(
         gradient: AppColors.scaffoldgradient,
       ),
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height / 15,
-          right: sizesApp(context, 30, 35, 40).toDouble(),
-          left: sizesApp(context, 30, 35, 40).toDouble(),
-        ),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BuildBackButton(context: context),
-              SizedBox(height: sizesApp(context, 20, 25, 30).toDouble()),
-              const BuildTitle(),
-              SizedBox(height: sizesApp(context, 20, 25, 30).toDouble()),
-              const BuildSubtitle(),
-              SizedBox(height: sizesApp(context, 30, 35, 40).toDouble()),
-              BuildEmailFieldForget(emailController: emailController),
-              SizedBox(height: sizesApp(context, 65, 70, 75).toDouble()),
-              BuildRecoverButton(
-                  formKey: formKey,
-                  emailController: emailController,
-                  context: context),
-            ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height / 15,
+            right: sizesApp(context, 30, 35, 40).toDouble(),
+            left: sizesApp(context, 30, 35, 40).toDouble(),
+          ),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BuildBackButton(context: context),
+                SizedBox(height: sizesApp(context, 20, 25, 30).toDouble()),
+                const BuildTitle(),
+                SizedBox(height: sizesApp(context, 20, 25, 30).toDouble()),
+                const BuildSubtitle(),
+                SizedBox(height: sizesApp(context, 30, 35, 40).toDouble()),
+                BuildEmailFieldForget(emailController: emailController),
+                SizedBox(height: sizesApp(context, 65, 70, 75).toDouble()),
+                BuildRecoverButton(
+                    formKey: formKey,
+                    emailController: emailController,
+                    context: context),
+              ],
+            ),
           ),
         ),
       ),

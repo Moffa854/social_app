@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/Config/Router/routes_name.dart';
 import 'package:social_app/Core/Extensions/Navigation/app_navigations.dart';
-import 'package:social_app/features/auth/presentation/cubit/auth_cubit/cubit/auth_cubit.dart';
+import 'package:social_app/features/auth/presentation/manager/auth%20cubit/auth_cubit.dart';
 import 'package:social_app/features/auth/presentation/widgets/build_body.dart';
 
 class ForgetPassword extends StatelessWidget {
@@ -30,11 +30,11 @@ class ForgetPassword extends StatelessWidget {
   }
 
   void _handleAuthState(BuildContext context, AuthState state) {
-    if (state is Homesuccess) {
+    if (state is AuthSuccess) {
       Fluttertoast.showToast(msg: 'Check your email');
       emailController.clear();
       context.pushNamedAndRemoveUntil(pageRoute: RoutesName.login);
-    } else if (state is HomeError) {
+    } else if (state is AuthError) {
       Fluttertoast.showToast(
         msg: 'Email not found',
         toastLength: Toast.LENGTH_SHORT,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Core/Widgets/build_elevated_bottom.dart';
-import 'package:social_app/features/auth/presentation/cubit/auth_cubit/cubit/auth_cubit.dart';
+import 'package:social_app/features/auth/presentation/manager/auth%20cubit/auth_cubit.dart';
 
 class BuildRecoverButton extends StatelessWidget {
   const BuildRecoverButton({

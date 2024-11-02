@@ -1,4 +1,4 @@
 abstract class AppImages {
   static const String introduce = 'assets/images/introduce.png';
-  static const String ciao = 'assets/images/Ciao.png';
+  static const String chatBackground = 'assets/images/chat background.png';
 }

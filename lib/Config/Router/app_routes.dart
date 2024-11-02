@@ -5,6 +5,7 @@ import 'package:social_app/features/Introduce/presentation/pages/introduce_page.
 import 'package:social_app/features/auth/presentation/pages/forget_password.dart';
 import 'package:social_app/features/auth/presentation/pages/login_page.dart';
 import 'package:social_app/features/auth/presentation/pages/logup_page.dart';
+import 'package:social_app/features/home/presentation/pages/add_post_page.dart';
 import 'package:social_app/features/home/presentation/pages/home_page.dart';
 
 class AppRoutes {
@@ -30,16 +31,8 @@ class AppRoutes {
           ForgetPassword(),
           const Offset(0.1, 1.0),
         );
-      case RoutesName.home:
-        return createSlideTransation(
-          const HomePage(),
-          const Offset(0.1, 1.0),
-        );
-      // case RoutesName.app:
-      //   return createSlideTransation(
-      //     BottomNavBarApp(),
-      //     const Offset(0.1, 1.0),
-      //   );
+     
+       
       default:
         return onUnknownRoute(settings);
     }
